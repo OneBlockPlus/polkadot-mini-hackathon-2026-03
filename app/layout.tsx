@@ -28,7 +28,7 @@ export default async function RootLayout({
   // Default to English for the root layout
   // The locale will be set in the [locale]/layout.tsx through a different approach
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${notoSansSC.variable} antialiased`}
       >

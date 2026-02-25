@@ -11,6 +11,7 @@ export default getRequestConfig(async ({ locale }) => {
       wallet: (await import(`../public/locales/${resolvedLocale}/wallet.json`)).default,
       mint: (await import(`../public/locales/${resolvedLocale}/mint.json`)).default,
       leaderboard: (await import(`../public/locales/${resolvedLocale}/leaderboard.json`)).default,
+      counselors: (await import(`../public/locales/${resolvedLocale}/counselors.json`)).default,
       // settings: (await import(`../public/locales/${resolvedLocale}/settings.json`)).default,
       discussions: (await import(`../public/locales/${resolvedLocale}/discussions.json`)).default,
     },

@@ -104,6 +104,56 @@ export const initDatabase = async () => {
     await client.execute(`CREATE INDEX IF NOT EXISTS idx_user_project_entries_user_project_count ON user_project_entries(userId, projectId, completedCount DESC);`);
     await client.execute(`CREATE INDEX IF NOT EXISTS idx_user_project_entries_user_project_time ON user_project_entries(userId, projectId, updatedAt DESC);`);
 
+    // Create counselors table
+    await client.execute(`
+      CREATE TABLE IF NOT EXISTS counselors (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        skills TEXT NOT NULL,
+        remark TEXT,
+        price_usd REAL DEFAULT 10.0,
+        telegram TEXT,
+        wechat TEXT,
+        wallet_address TEXT NOT NULL,
+        served_times INTEGER DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        is_active BOOLEAN DEFAULT TRUE
+      );
+    `);
+
+    // Create counselor_orders table
+    await client.execute(`
+      CREATE TABLE IF NOT EXISTS counselor_orders (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        counselor_id INTEGER NOT NULL,
+        counselor_wallet_address TEXT NOT NULL,
+        user_wallet_address TEXT NOT NULL,
+        payment_tx_hash TEXT,
+        payment_amount TEXT,
+        payment_network TEXT,
+        payment_asset TEXT,
+        status TEXT DEFAULT 'paid',
+        completion_method TEXT,
+        rejection_reason TEXT,
+        paid_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        expires_at DATETIME,
+        completed_at DATETIME,
+        rejected_at DATETIME,
+        settlement_tx_hash TEXT,
+        settlement_amount TEXT,
+        FOREIGN KEY (counselor_id) REFERENCES counselors(id)
+      );
+    `);
+
+    // Create counselor indexes
+    await client.execute(`CREATE INDEX IF NOT EXISTS idx_counselors_active ON counselors(is_active);`);
+    await client.execute(`CREATE INDEX IF NOT EXISTS idx_counselors_wallet ON counselors(wallet_address);`);
+    await client.execute(`CREATE INDEX IF NOT EXISTS idx_orders_counselor ON counselor_orders(counselor_id);`);
+    await client.execute(`CREATE INDEX IF NOT EXISTS idx_orders_user ON counselor_orders(user_wallet_address);`);
+    await client.execute(`CREATE INDEX IF NOT EXISTS idx_orders_status ON counselor_orders(status);`);
+    await client.execute(`CREATE INDEX IF NOT EXISTS idx_orders_expires ON counselor_orders(expires_at);`);
+
     // 检查是否已有数据，如果没有则添加示例数据
     const projectCount = await client.execute('SELECT COUNT(*) as count FROM project_items');
     if (projectCount.rows[0][0] === 0) {

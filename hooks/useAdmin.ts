@@ -1,20 +1,48 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useWallet } from '../contexts/WalletContext';
 
+/**
+ * useAdmin Hook - 检查当前用户是否为管理员
+ * 
+ * 注意：此Hook通过调用后端API来验证管理员权限，而不是在前端检查环境变量。
+ * 这样可以避免在客户端暴露管理员地址，提高安全性。
+ */
 export const useAdmin = () => {
   const { wallet } = useWallet();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isChecking, setIsChecking] = useState(false);
   
-  const isAdmin = useMemo(() => {
-    if (!wallet?.address) return false;
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (!wallet?.address) {
+        setIsAdmin(false);
+        return;
+      }
+      
+      setIsChecking(true);
+      try {
+        // 调用后端API验证管理员权限
+        const response = await fetch('/api/admin/verify', {
+          method: 'GET',
+          headers: {
+            'x-wallet-address': wallet.address,
+          },
+        });
+        
+        const data = await response.json();
+        setIsAdmin(data.isAdmin || false);
+      } catch (error) {
+        console.error('Failed to verify admin status:', error);
+        setIsAdmin(false);
+      } finally {
+        setIsChecking(false);
+      }
+    };
     
-    const adminAddress = process.env.NEXT_PUBLIC_ADMIN_ADDRESS || process.env.ADMIN_ADDRESS;
-    if (!adminAddress) return false;
-    
-    // 比较地址时不区分大小写
-    return wallet.address.toLowerCase() === adminAddress.toLowerCase();
+    checkAdminStatus();
   }, [wallet?.address]);
   
-  return { isAdmin };
+  return { isAdmin, isChecking };
 };

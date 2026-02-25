@@ -44,6 +44,16 @@ export default function Header() {
               {t('home')}
             </a>
             <a
+              href={`/${pathname.split('/')[1]}/counselors`}
+              className={`text-sm font-medium transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400 ${
+                pathname.includes('/counselors')
+                  ? 'text-blue-600 dark:text-blue-400'
+                  : 'text-zinc-600 dark:text-zinc-400'
+              }`}
+            >
+              {t('counselors')}
+            </a>
+            <a
               href={`/${pathname.split('/')[1]}/discussions`}
               className={`text-sm font-medium transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400 ${
                 pathname.includes('/discussions')
@@ -158,6 +168,17 @@ export default function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               {t('home')}
+            </a>
+            <a
+              href={`/${pathname.split('/')[1]}/counselors`}
+              className={`block py-2 px-3 rounded-lg text-sm font-medium transition-colors duration-300 hover:text-blue-600 hover:bg-zinc-100 dark:hover:text-blue-400 dark:hover:bg-zinc-800 ${
+                pathname.includes('/counselors')
+                  ? 'text-blue-600 dark:text-blue-400 bg-zinc-100 dark:bg-zinc-800'
+                  : 'text-zinc-600 dark:text-zinc-400'
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {t('counselors')}
             </a>
             <a
               href={`/${pathname.split('/')[1]}/discussions`}

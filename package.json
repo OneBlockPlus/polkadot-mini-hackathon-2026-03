@@ -15,10 +15,13 @@
     "@ai-sdk/openai": "^2.0.79",
     "@giscus/react": "^3.1.0",
     "@libsql/client": "^0.15.15",
+    "@openzeppelin/contracts": "^5.2.0",
     "@tailwindcss/typography": "^0.5.19",
     "@walletconnect/modal": "^2.7.0",
     "@walletconnect/sign-client": "^2.23.0",
-    "@openzeppelin/contracts": "^5.2.0",
+    "@x402/core": "^2.4.0",
+    "@x402/evm": "^2.4.0",
+    "@x402/fetch": "^2.4.0",
     "ai": "^5.0.108",
     "autoprefixer": "^10.4.22",
     "ethers": "^6.16.0",
@@ -31,6 +34,7 @@
     "solc": "^0.8.31",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
+    "viem": "^2.46.2",
     "zustand": "^5.0.9"
   },
   "devDependencies": {
