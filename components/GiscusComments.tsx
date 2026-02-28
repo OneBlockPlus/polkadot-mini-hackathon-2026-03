@@ -49,7 +49,7 @@ export function GiscusComments({ config, className = '' }: GiscusCommentsProps) 
         emitMetadata={config.emitMetadata || '0'}
         inputPosition={config.inputPosition || 'bottom'}
         theme={theme || 'preferred_color_scheme'}
-        lang={config.lang || 'zh-CN'}
+        lang={config.lang || 'en'}
       />
     </div>
   );

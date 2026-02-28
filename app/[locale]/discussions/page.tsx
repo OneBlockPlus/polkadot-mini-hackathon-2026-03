@@ -22,7 +22,7 @@ export default function DiscussionsPage() {
     emitMetadata: '0',
     inputPosition: 'bottom',
     theme: 'preferred_color_scheme' as const,
-    lang: 'zh-CN',
+    lang: 'en',
     lazyLoading: true
   };
   
