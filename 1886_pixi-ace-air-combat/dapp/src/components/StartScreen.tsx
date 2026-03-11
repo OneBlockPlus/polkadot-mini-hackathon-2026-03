@@ -1,8 +1,22 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import type { ReactNode } from "react";
+import { useConnection } from "wagmi";
 
 interface StartScreenProps {
-  onStart: () => void;
+  onStart: (isConnected: boolean) => void;
   children?: ReactNode;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
 }
 
 // Pre-compute star positions so render stays pure
@@ -14,10 +28,12 @@ const STARS = Array.from({ length: 60 }, (_, i) => ({
   opacity: (0.2 + ((i * 11 + 1) % 8) * 0.1).toFixed(2),
 }));
 
-function StartScreen({ onStart, children }: StartScreenProps) {
+function StartScreen({ onStart, children, open, setOpen }: StartScreenProps) {
+  const { isConnected } = useConnection();
+
   return (
     <div className="flex h-full w-full flex-col items-center justify-center bg-black">
-      {children}
+      {/*{children}*/}
 
       {/* Animated background stars via CSS */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -126,8 +142,38 @@ function StartScreen({ onStart, children }: StartScreenProps) {
         </div>
       </div>
 
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogTrigger asChild>
+          {/* Start button */}
+          <button
+            onClick={() => onStart(isConnected)}
+            className="relative cursor-pointer overflow-hidden rounded border border-cyan-500 bg-transparent px-12 py-4 font-mono text-lg font-bold tracking-[0.3em] text-cyan-400 uppercase transition-all duration-200 hover:bg-cyan-500 hover:text-black hover:shadow-[0_0_30px_#00d4ff]"
+            style={{
+              boxShadow: "0 0 15px rgba(0,212,255,0.3)",
+            }}
+          >
+            ▶ LAUNCH
+          </button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Connect Wallet</AlertDialogTitle>
+            <AlertDialogDescription>
+              Please connect your wallet to start the game. Don't worry, we
+              won't ask for any permissions or transactions - it's just to
+              verify your identity as a pilot.
+            </AlertDialogDescription>
+            {children}
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {/* Start button */}
-      <button
+      {/*<button
         onClick={onStart}
         className="relative cursor-pointer overflow-hidden rounded border border-cyan-500 bg-transparent px-12 py-4 font-mono text-lg font-bold tracking-[0.3em] text-cyan-400 uppercase transition-all duration-200 hover:bg-cyan-500 hover:text-black hover:shadow-[0_0_30px_#00d4ff]"
         style={{
@@ -135,7 +181,7 @@ function StartScreen({ onStart, children }: StartScreenProps) {
         }}
       >
         ▶ LAUNCH
-      </button>
+      </button>*/}
 
       <div className="mt-6 font-mono text-xs text-gray-600">
         Survive as many waves as you can · Good luck, pilot

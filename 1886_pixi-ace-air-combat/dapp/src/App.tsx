@@ -32,8 +32,15 @@ export default function App() {
     kills: 0,
     wave: 1,
   });
+  const [open, setOpen] = useState(false);
 
-  const handleStart = () => setScreen("playing");
+  const handleStart = (isConnected: boolean) => {
+    if (!isConnected) {
+      setOpen(true);
+      return;
+    }
+    setScreen("playing");
+  };
 
   const handleGameOver = (state: GameState) => {
     setGameResult({ score: state.score, kills: state.kills, wave: state.wave });
@@ -41,13 +48,12 @@ export default function App() {
   };
 
   const handleRestart = () => setScreen("playing");
-
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <div className="relative h-screen w-screen overflow-hidden bg-black">
           {screen === "start" && (
-            <StartScreen onStart={handleStart}>
+            <StartScreen onStart={handleStart} open={open} setOpen={setOpen}>
               <ConnectWallet />
             </StartScreen>
           )}
