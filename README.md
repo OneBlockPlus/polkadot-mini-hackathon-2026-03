@@ -1,105 +1,276 @@
-# Deploy on Revive Scale on Polkadot 2.0
+# DotDuel — Decentralised Prediction & Tournament Protocol
 
-——在 Revive 上部署，基于 Polkadot 2.0 扩展的应用
+> 1v1 Duels + Bracket Tournaments + Prediction Markets — built on **Polkadot / Revive (EVM)**
 
----
-
-## 活动背景
-
-本黑客松立足于波卡生态演进的关键节点。Polkadot 2.0 带来了全新的可扩展性与灵活性，而作为其生态重要组成的 Revive 平行链，凭借对以太坊工具链的 100% 兼容性，为开发者提供了无缝迁移与创新的绝佳舞台。
-
-本次活动旨在汇聚开发者力量，共同探索在 Revive 上部署、并借助 Polkadot 2.0 实现规模化扩展的实践路径，通过应用迁移、基础设施构建与原创开发三大赛道，加速成熟项目融入波卡生态，并孵化下一代原生应用，共同塑造多链互通的未来。
+[![Polkadot Hackathon 2025](https://img.shields.io/badge/Polkadot%20Hackathon-2025-E6007A?style=flat-square)](https://polkadot.network)
+[![Track 3](https://img.shields.io/badge/Track%203-Original%20DApp-blueviolet?style=flat-square)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue?style=flat-square)](#)
 
 ---
 
-## 活动赛道
+## Overview
 
-### 🏁 Track 1：Revive 迁移挑战赛
+**DotDuel** is a decentralised peer-to-peer prediction protocol with two core products:
 
-- **方向**：借助 Revive 对以太坊工具链（MetaMask、Hardhat、Foundry 等）的 100% 兼容性，将成熟的以太坊/EVM 生态 DApp 迁移至波卡网络。
-- 迁移后的应用在波卡上需实现比以太坊 L2 更快的交易速度或更低的成本。
+1. **1v1 Duels** — Two players stake ETH on a match outcome. A referee or automated oracle settles the result, and the smart contract distributes winnings.
+2. **Tournament Brackets** — 4 / 8 / 16-player single-elimination brackets with entry fees and prize pools (60% / 25% / 15% for 1st / 2nd / 3rd).
+3. **Prediction Market** — Polymarket-inspired side bets where spectators predict the tournament winner and earn a share of the prediction pool.
 
-### 🏁 Track 2：Revive 生态原生工具开发
-
-- **方向**：围绕 Revive 生态，开发其当前缺乏的基础设施或工具（如监控、调试、数据分析等）。
-- Revive 主网刚启动，亟待丰富基础设施类别。
-
-### 🏁 Track 3：原创 DApp 开发
-
-- **方向**：基于 Revive 与波卡 2.0 技术栈，进行具备创新场景或技术实现的去中心化应用开发。
+All logic — stakes, settlement, and payouts — lives entirely on-chain in Solidity smart contracts.
 
 ---
 
-## 奖金池
+## Key Features
 
-**1000 U**
-
----
-
-## 活动奖项
-
-| 奖项                 | 说明             |
-| -------------------- | ---------------- |
-| 🥇 一等奖            | 300U × 1         |
-| 🥈 二等奖            | 250U × 1         |
-| 🥉 三等奖            | 150U × 1         |
-| 💻 最佳开发者/团队   | 瓜分 200U 奖金池 |
-| 🛠️ 最勤劳开发者/团队 | 瓜分 200U 奖金池 |
+| Feature | Description |
+|---------|-------------|
+| **Transparent Predictions** | Smart contracts auto-execute; code guarantees fairness |
+| **Dual Settlement Modes** | Referee mode (manual) & Oracle mode (API auto-settlement) |
+| **Tournament Brackets** | Single-elimination brackets with on-chain bracket generation & shuffle |
+| **Prediction Market** | Bet on tournament winners; proportional reward distribution |
+| **Auto Settlement** | Results settle and prizes distribute instantly on-chain |
+| **Low Fees** | 0.5% platform fee (duels), 2.5% entry pool + 5% prediction pool (tournaments) |
 
 ---
 
-## 活动时间
+## Tech Stack
 
-| 时间       | 事项           |
-| ---------- | -------------- |
-| ⏰ 2月9日  | 黑客松报名开始 |
-| ⏳ 3月15日 | 代码提交截止   |
-| 💻 3月17日 | Demo day       |
-
----
-
-## 项目要求
-
-### 项目代码库 (Project Repository)
-
-- 一个公开的 GitHub 代码库，包含项目全部源代码；
-- 提供清晰、结构良好的 README 文档，内容应涵盖：
-  - 项目概述与目标说明
-  - 环境配置与使用指南
-  - 所使用的依赖项及技术栈说明
-
-### 视频演示 (Optional Video Walkthrough)
-
-- 可提供一段短视频演示（建议 2–5 分钟），展示项目主要功能并阐述其设计目的。
+| Layer | Technology |
+|-------|-----------|
+| **Smart Contracts** | Solidity 0.8.20, OpenZeppelin 5.x, Hardhat |
+| **Frontend** | React 18, TypeScript, Vite 5, Tailwind CSS 3, wagmi 2, @tanstack/react-query 5 |
+| **Backend** | Node.js, Express 4, TypeScript, ethers v6 (read-only chain indexer, no DB) |
+| **Blockchain** | Polkadot / Revive (EVM-compatible via REVM) — currently on Mantle for dev |
+| **Wallet** | MetaMask via wagmi injected connector |
 
 ---
 
-## 评审标准
+## Project Structure
 
-为确保评选公正并引导项目高质量开发，评审将围绕以下五个维度进行综合评估：
-
-| 维度                       | 权重 | 说明                                                                              |
-| -------------------------- | ---- | --------------------------------------------------------------------------------- |
-| 技术实现                   | 30%  | 着重考察代码质量、架构设计的合理性、安全性及核心功能的完整实现度。                |
-| 创新性与实用性             | 25%  | 评估项目在技术方案或产品设计上的独创性，及其解决实际问题的价值。                  |
-| Polkadot/Revive 生态结合度 | 20%  | 重点关注是否有效利用 Revive 的 REVM 特性、Polkadot 2.0 的跨链能力或其他生态优势。 |
-| 开发者体验                 | 15%  | 评估工具链使用的顺畅度、部署流程的便捷性，以及终端用户交互的友好程度。            |
-| 项目潜力与生态贡献         | 10%  | 衡量项目的可持续发展可能性、商业模式清晰度及其对 Polkadot 生态的长期价值。        |
+```
+DotDuel/
+├── contracts/                 # Smart Contracts
+│   ├── contracts/
+│   │   ├── DuelPlatform.sol         # 1v1 duel contract
+│   │   └── TournamentPlatform.sol   # Tournament bracket + prediction market
+│   ├── scripts/deploy.ts            # Deployment script (both contracts)
+│   ├── test/DuelPlatform.test.ts    # Hardhat test suite
+│   └── hardhat.config.ts
+├── backend/                   # Express API (chain read-only indexer)
+│   └── src/
+│       ├── services/
+│       │   ├── duelPlatform.ts      # Duel data reader
+│       │   ├── tournament.ts        # Tournament data reader
+│       │   └── oracle.ts            # Oracle / auto-settlement service
+│       └── routes/
+│           ├── matches.ts           # /api/matches
+│           ├── tournaments.ts       # /api/tournaments
+│           ├── users.ts             # /api/users
+│           ├── stats.ts             # /api/stats
+│           └── oracle.ts            # /api/oracle
+├── frontend/                  # React SPA
+│   └── src/
+│       ├── pages/
+│       │   ├── Home.tsx
+│       │   ├── CreateMatch.tsx
+│       │   ├── MatchList.tsx / MatchDetail.tsx / MyMatches.tsx
+│       │   ├── TournamentList.tsx / TournamentDetail.tsx / CreateTournament.tsx
+│       │   └── Stats.tsx
+│       ├── hooks/                   # wagmi + react-query hooks
+│       ├── components/              # Layout, MatchCard, ConnectWallet
+│       └── config/wagmi.ts          # Chain & wallet config
+└── docs/                      # Session logs & presentations
+```
 
 ---
 
-## 活动收获
+## Quick Start
 
-- **🚀 能力提升**：Web3 新手可快速入门 Polkadot 开发，掌握平行链基础；资深开发者可突破瓶颈，探索创新方向，全面提升链上开发能力。
-- **🛠️ 实战转化**：亲手构建创新 Web3 应用，深入体验 Polkadot 生态优势，实现从学到用，巩固开发实战技能。
-- **🏆 荣誉激励**：赢取丰厚奖金，展示个人或团队项目，提升行业影响力，为吸引投资、求职或创业奠定基础。
-- **🌐 生态链接**：低门槛融入 Polkadot 开发者社群，结识导师与同行，获取最新资源、合作机会与行业动态，构建长期资源网络。
-- **🔗 项目孵化**：在导师指导下将创意转化为可落地的 Web3 应用原型（如 DeFi、NFT 等），积累可展示成果，为迭代、商业化或后续参赛做准备。
+### Prerequisites
+
+- **Node.js** >= 18
+- **npm** or **yarn**
+- **MetaMask** browser extension
+
+### 1. Clone
+
+```bash
+git clone https://github.com/hkfish01/Polkadot-DotDuel_v2.git
+cd Polkadot-DotDuel_v2
+```
+
+### 2. Deploy Smart Contracts
+
+```bash
+cd contracts
+npm install
+cp .env.example .env
+# Edit .env -> set DEPLOYER_PRIVATE_KEY, PLATFORM_WALLET, ORACLE_ADDRESS
+
+npx hardhat compile
+npx hardhat run scripts/deploy.ts --network mantleSepolia   # or your target network
+```
+
+The deploy script outputs the addresses for **DuelPlatform** and **TournamentPlatform**.
+
+### 3. Start Backend
+
+```bash
+cd ../backend
+npm install
+cp .env.example .env
+# Edit .env -> set CONTRACT_ADDRESS, TOURNAMENT_ADDRESS, RPC_URL
+
+npm run dev        # runs on http://localhost:3001
+```
+
+### 4. Start Frontend
+
+```bash
+cd ../frontend
+npm install
+cp .env.example .env
+# Edit .env -> set:
+#   VITE_CONTRACT_ADDRESS=0x...
+#   VITE_TOURNAMENT_ADDRESS=0x...
+#   VITE_API_URL=http://localhost:3001
+
+npm run dev        # runs on http://localhost:5173
+```
+
+Open http://localhost:5173 in your browser, connect MetaMask, and start duelling!
 
 ---
 
-## 详情咨询
+## Smart Contract Architecture
 
-👇 更多细节咨询请扫码添加小助手 Emma
+### DuelPlatform.sol
 
-![扫码添加小助手 Emma](images/emma.png)
+| Function | Description |
+|----------|-------------|
+| createMatch | Creator sets mode, stake, times, description |
+| joinMatch | Opponent sends stake to join |
+| submitResultByReferee | Referee declares winner (mode 0) |
+| submitResultByOracle | Oracle submits winner (mode 1) |
+| cancelMatch | Creator cancels; stakes refunded |
+| getUserStats | Returns wins, losses, total staked/won |
+
+**Fee structure**: Referee mode -> 3% referee + 0.5% platform. Oracle mode -> 0.5% platform.
+
+### TournamentPlatform.sol
+
+| Function | Description |
+|----------|-------------|
+| createTournament | Organiser sets name, bracket size, entry fee, schedule |
+| registerForTournament | Player pays entry fee to register |
+| startTournament | Generates shuffled bracket |
+| submitMatchResult | Oracle submits round-by-round results |
+| placePrediction | Spectators bet on predicted winner |
+| claimPrediction | Claim proportional share of prediction pool |
+| cancelTournament | Organiser cancels; entry fees refunded |
+
+**Prize distribution**: 1st 60% / 2nd 25% / 3rd 15% (after 2.5% platform fee).
+**Prediction pool fee**: 5% platform fee; rest split proportionally among correct bettors.
+
+---
+
+## API Endpoints
+
+### Duels
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/matches | List all matches (with pagination) |
+| GET | /api/matches/:id | Get match details |
+| GET | /api/users/:address/stats | User win/loss stats |
+| GET | /api/users/:address/matches | User match history |
+| GET | /api/stats | Platform-wide stats + leaderboard |
+| GET | /api/stats/recent | Recent matches |
+
+### Tournaments
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/tournaments | List tournaments |
+| GET | /api/tournaments/:id | Tournament details |
+| GET | /api/tournaments/:id/bracket/:round | Bracket data for a round |
+| GET | /api/tournaments/:id/predictions | Prediction market data |
+| GET | /api/tournaments/:id/results | Final results and placements |
+| GET | /api/tournaments/stats | Tournament platform stats |
+
+---
+
+## Testing
+
+```bash
+cd contracts
+npx hardhat test
+```
+
+Test coverage includes: deployment, match creation, joining, settlement, cancellation, admin functions, and query functions.
+
+---
+
+## Environment Variables
+
+### contracts/.env
+
+```
+DEPLOYER_PRIVATE_KEY=0x...
+PLATFORM_WALLET=0x...
+ORACLE_ADDRESS=0x...
+```
+
+### backend/.env
+
+```
+PORT=3001
+RPC_URL=https://rpc.sepolia.mantle.xyz
+CONTRACT_ADDRESS=0x...
+TOURNAMENT_ADDRESS=0x...
+```
+
+### frontend/.env
+
+```
+VITE_CONTRACT_ADDRESS=0x...
+VITE_TOURNAMENT_ADDRESS=0x...
+VITE_API_URL=http://localhost:3001
+VITE_USE_TESTNET=true
+```
+
+---
+
+## Roadmap
+
+- [x] 1v1 Duel smart contract (Referee + Oracle modes)
+- [x] React frontend with wagmi wallet integration
+- [x] Express backend as chain indexer
+- [x] Tournament bracket contract (4/8/16 players)
+- [x] Prediction market (Polymarket-style)
+- [x] Full English UI
+- [ ] Migrate chain config to Polkadot Revive testnet/mainnet
+- [ ] Oracle auto-settlement integration (mydupr API)
+- [ ] Database layer (PostgreSQL) for faster queries
+- [ ] Mobile-responsive design refinements
+- [ ] Multi-language support (i18n)
+
+---
+
+## Hackathon Info
+
+- **Event**: Polkadot Hackathon 2025
+- **Track**: Track 3 — Original DApp Development
+- **Team**: DotDuel
+- **Version**: v2.0.0
+
+---
+
+## License
+
+MIT
+
+---
+
+**Made with care for the Polkadot ecosystem.**
