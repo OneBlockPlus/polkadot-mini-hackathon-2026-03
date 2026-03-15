@@ -20,6 +20,16 @@ cd frontend
 yarn
 ```
 
+```env
+RPC_URL=https://services.polkadothub-rpc.com/testnet/
+PRIVATE_KEY=
+#deployed testnet Willbook address
+VITE_CONTRACT_ADDRESS=0x096eE4403ACE200447b2c7cE11224Ed9af5EBEaC
+TESTNET_RPC_URL=https://eth-rpc-testnet.polkadot.io/
+TESTNET_BLOCKSCOUT_URL=https://blockscout-testnet.polkadot.io/
+TESTNET_WS_URL=wss://asset-hub-paseo-rpc.n.dwellir.com
+```
+
 ## Start frontend
 
 ```bash
